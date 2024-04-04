@@ -96,7 +96,7 @@ public class WeatherApp {
             e.printStackTrace();
         }
 
-        return null;
+        return location;
     }
 
     // retrieves geographic coordinates for given location name
