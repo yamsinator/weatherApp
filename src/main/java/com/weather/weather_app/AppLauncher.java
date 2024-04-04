@@ -11,6 +11,7 @@ public class AppLauncher {
 				// Display weather app
 				new WeatherAppGUI().setVisible(true);
 				
+				//Testing functions
 //				System.out.println(WeatherApp.getLocationData("Tokyo"));
 				
 //				System.out.println(WeatherApp.getCurrentTime());

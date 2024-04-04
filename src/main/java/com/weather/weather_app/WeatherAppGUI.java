@@ -7,11 +7,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class WeatherAppGUI extends JFrame {
+    private JTextField searchBar;
+    private JLabel weatherConditionImage;
+    private JLabel temperatureText;
+    private JLabel weatherCondDesc;
+    private JLabel humidityText;
+    private JLabel windspeedText;
     private JSONObject weatherData;
 
     public WeatherAppGUI(){
@@ -38,23 +46,23 @@ public class WeatherAppGUI extends JFrame {
 
     private void addGuiComponents(){
         // search field
-        JTextField searchTextField = new JTextField();
+        searchBar = new JTextField();
 
         // set the location and size of our component
-        searchTextField.setBounds(15, 15, 351, 45);
+        searchBar.setBounds(15, 15, 351, 45);
 
         // change the font style and size
-        searchTextField.setFont(new Font("Dialog", Font.PLAIN, 24));
+        searchBar.setFont(new Font("Dialog", Font.PLAIN, 24));
 
-        add(searchTextField);
+        add(searchBar);
 
         // weather image
-        JLabel weatherConditionImage = new JLabel(loadImage("src/main/resources/appImages/cloudy.png"));
+        weatherConditionImage = new JLabel(loadImage("src/main/resources/appImages/cloudy.png"));
         weatherConditionImage.setBounds(0, 125, 450, 217);
         add(weatherConditionImage);
 
         // temperature text
-        JLabel temperatureText = new JLabel("10 F");
+        temperatureText = new JLabel("10 F");
         temperatureText.setBounds(0, 350, 450, 54);
         temperatureText.setFont(new Font("Dialog", Font.BOLD, 48));
 
@@ -63,11 +71,11 @@ public class WeatherAppGUI extends JFrame {
         add(temperatureText);
 
         // weather condition description
-        JLabel weatherConditionDesc = new JLabel("Cloudy");
-        weatherConditionDesc.setBounds(0, 405, 450, 36);
-        weatherConditionDesc.setFont(new Font("Dialog", Font.PLAIN, 32));
-        weatherConditionDesc.setHorizontalAlignment(SwingConstants.CENTER);
-        add(weatherConditionDesc);
+        weatherCondDesc = new JLabel("Cloudy");
+        weatherCondDesc.setBounds(0, 405, 450, 36);
+        weatherCondDesc.setFont(new Font("Dialog", Font.PLAIN, 32));
+        weatherCondDesc.setHorizontalAlignment(SwingConstants.CENTER);
+        add(weatherCondDesc);
 
         // humidity image
         JLabel humidityImage = new JLabel(loadImage("src/main/resources/appImages/humidity.png"));
@@ -75,7 +83,7 @@ public class WeatherAppGUI extends JFrame {
         add(humidityImage);
 
         // humidity text
-        JLabel humidityText = new JLabel("<html><b>Humidity</b> 100%</html>");
+        humidityText = new JLabel("<html><b>Humidity</b> 100%</html>");
         humidityText.setBounds(90, 500, 85, 55);
         humidityText.setFont(new Font("Dialog", Font.PLAIN, 16));
         add(humidityText);
@@ -86,13 +94,13 @@ public class WeatherAppGUI extends JFrame {
         add(windspeedImage);
 
         // windspeed text
-        JLabel windspeedText = new JLabel("<html><b>Windspeed</b> 15mph</html>");
+        windspeedText = new JLabel("<html><b>Windspeed</b> 15mph</html>");
         windspeedText.setBounds(310, 500, 85, 55);
-        windspeedText.setFont(new Font("Dialog", Font.PLAIN, 16));
+        windspeedText.setFont(new Font("Dialog", Font.PLAIN, 15));
         add(windspeedText);
 
         // search button
-        JButton searchButton = new JButton(loadImage("src/main/resources/appImages/search.png"));
+        final JButton searchButton = new JButton(loadImage("src/main/resources/appImages/search.png"));
 
         // change the cursor to a hand cursor when hovering over this button
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -101,7 +109,7 @@ public class WeatherAppGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // get location from user
-                String userInput = searchTextField.getText();
+                String userInput = searchBar.getText();
 
                 // validate input - remove whitespace to ensure non-empty text
                 if(userInput.replaceAll("\\s", "").length() <= 0){
@@ -137,7 +145,7 @@ public class WeatherAppGUI extends JFrame {
                 temperatureText.setText(temperature + " F");
 
                 // update weather condition text
-                weatherConditionDesc.setText(weatherCondition);
+                weatherCondDesc.setText(weatherCondition);
 
                 // update humidity text
                 long humidity = (long) weatherData.get("humidity");
@@ -146,6 +154,15 @@ public class WeatherAppGUI extends JFrame {
                 // update windspeed text
                 double windspeed = (double) weatherData.get("windspeed");
                 windspeedText.setText("<html><b>Windspeed</b> " + windspeed + "mph</html>");
+            }
+        });   
+        
+        searchBar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    searchButton.doClick(); // Simulates click on search button
+                }
             }
         });
         add(searchButton);
@@ -167,11 +184,3 @@ public class WeatherAppGUI extends JFrame {
         return null;
     }
 }
-
-
-
-
-
-
-
-

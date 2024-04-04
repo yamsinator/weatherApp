@@ -219,9 +219,3 @@ public class WeatherApp {
         return weatherCondition;
     }
 }
-
-
-
-
-
-
